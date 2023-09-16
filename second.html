@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Select Input - InCoder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@font-face {
+            font-family: 'TT Prosto Sans Trial';
+            src: url('fonts/tt_prosto_sans_trial_black_italic-webfont.woff2') format('woff2'),
+                url('fonts/tt_prosto_sans_trial_black_italic-webfont.woff') format('woff');
+            font-weight: 900;
+            font-style: italic;
+        }
+
+
+
+
+        @font-face {
+            font-family: 'TT Prosto Sans Trial';
+            src: url('fonts/tt_prosto_sans_trial_regular-webfont.woff2') format('woff2'),
+                url('fonts/tt_prosto_sans_trial_regular-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'TT Prosto Sans Trial', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            background-color: rgb(52, 211, 153);
+        }
+
+        .customInputContainer {
+            width: 20rem;
+            display: flex;
+            max-width: 20rem;
+            margin-top: 2rem;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .customInputContainer .customInput {
+            margin: 0 1rem;
+            cursor: pointer;
+            user-select: none;
+            font-size: 1.16rem;
+            justify-content: space-between;
+            padding: 0.6rem 1rem 0.6rem 0.6rem;
+        }
+
+        .customInputContainer .customInput i {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .customInputContainer.show .customInput i {
+            transform: rotate(90deg);
+        }
+
+        .customInputContainer :is(.customInput, .options) {
+            width: 100%;
+            display: flex;
+            color: #202020;
+            background: #fff;
+            align-items: center;
+            border-radius: 0.3rem;
+        }
+
+        .customInputContainer .options {
+            display: none;
+            padding: 0.6rem;
+            font-size: 1.1rem;
+            justify-content: start;
+            flex-direction: column;
+            margin: 0.8rem 1rem 0rem 1rem;
+            transition: background-color 0.1s ease-in-out;
+        }
+
+        .customInputContainer.show .options {
+            display: block;
+        }
+
+        .customInputContainer .options :is(.searchInput, ul) {
+            width: 100%;
+            max-height: 15rem;
+            overflow-y: scroll;
+            position: relative;
+        }
+
+        .customInputContainer .options ul::-webkit-scrollbar {
+            width: 6px;
+            position: relative;
+        }
+
+        .customInputContainer .options ul::-webkit-scrollbar-track {
+            width: 2px;
+            border-radius: .2rem;
+            background: rgb(0 0 0 / 10%)
+        }
+
+        .customInputContainer .options ul::-webkit-scrollbar-thumb {
+            border-radius: .2rem;
+            background: rgb(0 0 0 / 30%);
+        }
+
+        .customInputContainer .options .searchInput {
+            display: flex;
+            padding: 0 0.4rem;
+            overflow-y: auto;
+            align-items: center;
+            border-radius: 0.4rem;
+            color: rgb(0 0 0 / 50%);
+            border: 2px solid rgb(0 0 0 / 30%);
+        }
+
+        .customInputContainer .options .searchInput.focus {
+            border: 2px solid rgb(52 211 153 / 70%);
+        }
+
+        .customInputContainer .options .searchInput input[type="text"] {
+            border: 0;
+            width: 100%;
+            outline: none;
+            height: 2.5rem;
+            font-size: 1rem;
+            padding: 0 0.4rem;
+            border-radius: 0.4rem;
+        }
+
+        .customInputContainer .options .searchInput input[type="text"]::placeholder {
+            font-size: 1rem;
+            color: rgb(0 0 0 / 50%);
+        }
+
+        .customInputContainer .options ul {
+            margin: 0.5rem 0;
+        }
+
+        .customInputContainer .options ul li {
+            cursor: pointer;
+            list-style: none;
+            padding: 0.4rem 0.4rem;
+            border-bottom: 1px solid rgb(204 204 204 / 50%);
+        }
+
+        .customInputContainer .options ul li.selected {
+            background: rgb(52 211 153 / 50%);
+        }
+
+        .customInputContainer .options ul li.selected:hover {
+            background: rgb(52 211 153 / 50%);
+        }
+
+        .customInputContainer .options ul li:last-child {
+            border: 0;
+        }
+
+        .customInputContainer .options ul li:hover {
+            background: rgb(52 211 153 / 20%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="customInputContainer">
+        <div class="customInput">
+            <div class="selectedData">Custom Input</div>
+            <i class="fa-solid fa-angle-right"></i>
+        </div>
+        <div class="options">
+            <div class="searchInput">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search">
+            </div>
+            <ul>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let customInput = document.querySelector('.customInput')
+            selectedData = document.querySelector('.selectedData')
+            searchInput = document.querySelector('.searchInput input')
+            ul = document.querySelector('.options ul')
+            customInputContainer = document.querySelector('.customInputContainer')
+
+            window.addEventListener('click', (e) => {
+                if (document.querySelector('.searchInput').contains(e.target)) {
+                    document.querySelector('.searchInput').classList.add('focus')
+                } else {
+                    document.querySelector('.searchInput').classList.remove('focus')
+                }
+            })
+
+            var countries = [
+                "Custom Input",
+                "Ачинск",
+                "Омск",
+                "Москва"
+            ];
+
+            customInput.addEventListener('click', () => {
+                customInputContainer.classList.toggle('show')
+            })
+
+            let countriesLength = countries.length
+
+            for (let i = 0; i < countriesLength; i++) {
+                let country = countries[i]
+                const li = document.createElement("li");
+                const countryName = document.createTextNode(country);
+                li.appendChild(countryName);
+                ul.appendChild(li);
+            }
+
+            
+
+
+            ul.querySelectorAll('li').forEach(li => {
+                li.addEventListener('click', (e) => {
+                    let selectdItem = e.target.innerText
+                    selectedData.innerText = selectdItem
+
+                    for (const li of document.querySelectorAll("li.selected")) {
+                        li.classList.remove("selected");
+                    }
+                    e.target.classList.add('selected')
+                    customInputContainer.classList.toggle('show')
+                })
+            });
+
+            function updateData(data) {
+                let selectedCountry = data.innerText
+                selectedData.innerText = selectedCountry
+
+                for (const li of document.querySelectorAll("li.selected")) {
+                    li.classList.remove("selected");
+                }
+                data.classList.add('selected')
+                customInputContainer.classList.toggle('show')
+                console.log(selectedCountry);
+            }
+
+            searchInput.addEventListener('keyup', (e) => {
+                let searchedVal = searchInput.value.toLowerCase()
+                let searched_country = []
+
+                searched_country = countries.filter(data => {
+                    return data.toLocaleLowerCase().startsWith(searchedVal)
+                }).map(data => {
+                    return `<li onClick="updateData(this)">${data}</li>`
+                }).join('')
+                ul.innerHTML = searched_country ? searched_country : "<p style='margin-top: 1rem;'>Opps can't find any result <p style='margin-top: .2rem; font-size: .9rem;'>Try searching something else.</p></p>"
+            })
+
+
+    </script>
+</body>
+
+</html>

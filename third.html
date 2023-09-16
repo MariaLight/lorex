@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+                @font-face {
+            font-family: 'TT Prosto Sans Trial';
+            src: url('fonts/tt_prosto_sans_trial_black_italic-webfont.woff2') format('woff2'),
+                url('fonts/tt_prosto_sans_trial_black_italic-webfont.woff') format('woff');
+            font-weight: 900;
+            font-style: italic;
+        }
+
+
+
+
+        @font-face {
+            font-family: 'TT Prosto Sans Trial';
+            src: url('fonts/tt_prosto_sans_trial_regular-webfont.woff2') format('woff2'),
+                url('fonts/tt_prosto_sans_trial_regular-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        
+
+        .custom-select-opener {
+            color: #272A2E;
+            font-family: 'TT Prosto Sans Trial';
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 141.523%; /* 22.644px */
+            background-color: #fff;
+            border-radius: 10px;
+            max-width: 360px;
+            position: relative;
+            padding: 14px 20px;
+        }
+.modal-2 {
+
+    position: fixed;
+    
+}
+        .modal__inner {
+            background: #1B1717;
+            padding: 70px 60px;
+
+        }
+        .modal__title {
+            color: #ECCCD9;
+font-family: 'TT Prosto Sans Trial';
+font-size: 44px;
+font-style: italic;
+font-weight: 900;
+line-height: 125.523%; /* 55.23px */
+text-transform: uppercase;
+margin-bottom: 30px;
+        }
+
+        .custom-select-opener::after {
+            content: url('/arrow-down.svg');
+            display: block;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            transition: transform .2s linear;
+        } 
+        .custom-select-container .custom-select-panel {
+    max-width: 360px;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+.custom-select-option {
+    padding: 10px 20px;
+    border-bottom: 1px solid #CFCFCF;
+    background-color: #fff;
+}
+.custom-select-option.has-focus {
+    background-color: #ECCCD9;
+}
+.custom-select-option.is-selected::before {
+    content: none;
+    padding-right: 0;
+}
+.custom-select-container.is-open .custom-select-opener::after {
+    transform: scale(1, -1);
+}
+.tabs {
+    margin-top: 44px;
+} 
+.tab-city {
+    display: none;
+    padding: 100px;
+    background-color: grey;
+}
+.active {
+            display: block;
+        }
+        .relative {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <input list="mySelect" name="city">
+        <datalist id='mySelect'>
+            <option value="Moscow">
+            <option value="Achinsk">
+            <option value="Омск">
+            <option value="Хром">
+            <option value="Сафари">
+        </datalist>
+    </form>
+    <div class="tabs">
+        <div id="Achinsk" class="tab-city active">г.Ачинск content</div>
+        <div class="tab-city">г.Омск content</div>
+        <div class="tab-city">г.Белогорск content</div>
+        <div class="tab-city">г.Благовещенск content</div>
+        <div class="tab-city">г.Комсомольск content</div>
+        <div class="tab-city">г.Хабаровск контент</div>
+        <div class="tab-city">г.Чита контент</div>
+        <div id="Омск" class="tab-city">г.Омск content</div>
+        <div class="tab-city">г.Алматы контент</div>
+        <div class="tab-city">г.Екатеринбург контент</div>
+        <div id="Moscow" class="tab-city">г.Москва контент</div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById('mySelect').addEventListener('change', function (e) {
+                    var id = e.target.value;
+                    // console.log(document.querySelectorAll('#myTab li a')[id]);
+                    document.querySelectorAll('.tab-city').forEach(function (item) {
+                        item.classList.remove('active')
+                    })
+                    document.querySelectorAll('.tab-city').querySelector('#'+id).classList.add('active');
+                });
+            });
+    </script>
+</body>
+
+</html>
